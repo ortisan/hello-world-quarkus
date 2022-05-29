@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+
+  mock-server:
+    image: mockserver/mockserver
+    ports:
+      - 1080:1080
+    environment:
+      MOCKSERVER_PROPERTY_FILE: /config/mockserver.properties
+      MOCKSERVER_INITIALIZATION_JSON_PATH: /config/initializerJson.json
+    volumes:
+      - type: bind
+        source: ./mock-server-config/
+        target: /config
