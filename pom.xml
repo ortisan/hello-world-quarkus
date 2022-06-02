@@ -18,6 +18,7 @@
         <surefire-plugin.version>3.0.0-M5</surefire-plugin.version>
         <vertx-web-client.version>4.2.7</vertx-web-client.version>
         <vertx-core.version>4.2.7</vertx-core.version>
+        <jandex-maven-plugin.version>1.2.2</jandex-maven-plugin.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -50,23 +51,16 @@
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>smallrye-mutiny-vertx-web</artifactId>
-            <version>2.21.0</version>
         </dependency>
         <dependency>
             <groupId>io.smallrye.reactive</groupId>
             <artifactId>smallrye-mutiny-vertx-web-client</artifactId>
-            <version>2.21.0</version>
         </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-web-client</artifactId>
-            <version>${vertx-web-client.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
-            <version>${vertx-core.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.vertx</groupId>-->
+<!--            <artifactId>vertx-core</artifactId>-->
+<!--            <version>${vertx-core.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-junit5</artifactId>
@@ -96,12 +90,32 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.jboss.jandex</groupId>
+                <artifactId>jandex-maven-plugin</artifactId>
+                <version>${jandex-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>make-index</id>
+                        <goals>
+                            <goal>jandex</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${compiler-plugin.version}</version>
                 <configuration>
                     <compilerArgs>
                         <arg>-parameters</arg>
                     </compilerArgs>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>io.quarkus</groupId>
+                            <artifactId>quarkus-extension-processor</artifactId>
+                            <version>${quarkus.platform.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
